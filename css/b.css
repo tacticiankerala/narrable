@@ -1,0 +1,27 @@
+#masonry {
+
+}
+
+#masonry > li {
+    width: 140px;
+    display:block;
+    background: #555;
+    margin: 5px;
+}
+
+#masonry > li.bigun {
+  width: 290px;
+  height: 50px;
+  background: #159;
+}
+
+#masonry > li li {
+    display:block;
+    height:20px;
+}
+
+.card-sortable-placeholder {
+    background: #aaa !important;
+}
+
+.dragging { opacity: .8; background: #ff6903 !important; }

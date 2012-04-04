@@ -1,0 +1,91 @@
+<html>
+    <head>
+     <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+     <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+     <script src="https://raw.github.com/desandro/isotope/master/jquery.isotope.js"></script>
+     <script src="http://dl.dropbox.com/u/1000295/jquery.masonry.min.js"></script>
+     <link href="style/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+     <link href="style/narrable-style.css" rel="stylesheet" type="text/css"/>
+     <style type ="text/css" id = "style-text">
+     </style>
+     <script> 
+      // var narrableXml;
+      var noOfChoices = 0;
+      var count = 0;
+       $(document).ready(function(){	 
+   	  $.ajax({
+        	type: "GET",
+		url: "source.xml",
+		dataType: "xml",
+		success: function(xml) {
+     	//	narrableXml = xml;
+     		$(xml).find('narrable').each(function(){
+     		noOfChoices = $(this).find('choice').length;
+     		$(this).find('choice').each(function(){
+          	var value = $(this).attr('value');
+          	var label = $(this).find('title').text();
+          	$("#test-choice").append("<option class='choice-name' value='"+ value +"'>"+label+"</option>");
+               });
+          
+            });         
+             
+        	    $("select").change(function(){
+
+                             $("select option:selected").each(function(){
+                                  count = 	$(this).val();
+                                 getHtmlAndCss(xml,$(this).val());
+                                                              
+                   }); 
+                });  
+	   
+               $("#next").click(function(){
+                     if(count < noOfChoices)
+                      $("#test-choice").val(++count).change();            
+               
+                });
+                
+                $("#previous").click(function(){
+                     if(count > 1)
+                      $("#test-choice").val(--count).change();  
+                }); 
+            }
+          }); 	    
+       });
+  
+ 
+     function getHtmlAndCss(xml,value){
+       	$(xml).find('choice').each(function(){
+         if($(this).attr('value') == value) {
+  		 htmlText = $(this).find("html-text").text();
+  		 cssText  = $(this).find("style-text").text();
+  		// alert(htmlText);
+                 $("#html-text").html(htmlText);
+  		 $("#style-text").html(cssText);		     
+             } 
+
+         });
+     
+  
+  	
+  
+  }	
+
+    </script> 
+    </head>
+   <body>
+   
+    <div class="span12">
+      <div id="previous" class="btn span1 offset5"><<</div> 
+      <div id="test-combination" class="span3 ">
+        <select id="test-choice" >
+          <option selected="selected">Select a combination</option>
+       	</select>
+      </div>     
+      <div id="next" class="btn span1">>></div> 
+    </div>
+    <hr />
+    <div id = "html-text" >
+    </div>
+  </body>
+</html>
